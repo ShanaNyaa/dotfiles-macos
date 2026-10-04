@@ -75,6 +75,7 @@ type zoxide &>/dev/null && eval "$(zoxide init zsh)"
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
 	command yazi "$@" --cwd-file="$tmp"
+	printf '\e[0 q' # yazi leaves a block cursor on exit in tmux; reset to default
 	IFS= read -r -d '' cwd < "$tmp"
 	[ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
 	command rm -f -- "$tmp"
