@@ -96,6 +96,23 @@ function lg() {
 #   fastfetch
 # fi
 
+# --- 14. Dotfiles helpers ---
+# Read-only: fetch + show each submodule vs latest tag and remote tip
+subcheck() {
+  git -C ~/dotfiles submodule foreach --quiet '
+    git fetch --quiet --tags origin
+    echo "$name: $(git describe --tags 2>/dev/null) | latest tag: $(git tag --sort=-v:refname | grep "^v" | head -1) | behind main: $(git rev-list --count HEAD..origin/HEAD 2>/dev/null || echo "?")"
+  '
+}
+
+# Move submodules to remote tips; for tag pins (catppuccin), checkout the tag manually
+subup() {
+  git -C ~/dotfiles submodule update --remote
+  echo
+  echo "Bumped (commit these paths when happy):"
+  git -C ~/dotfiles diff --submodule=log -- $(git -C ~/dotfiles config --file .gitmodules --get-regexp '\.path$' | awk '{print $2}')
+}
+
 # --- zsh-syntax-highlighting: MUST be the very last line ---
 if type brew &>/dev/null; then
   [ -f "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ] && \
