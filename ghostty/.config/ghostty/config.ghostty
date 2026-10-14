@@ -16,15 +16,15 @@
   theme = light:Catppuccin Latte,dark:Catppuccin Mocha
 
   # --- Cursor Trail ---
-  # custom-shader = ghostty/shaders/cursor_sweep.glsl
-  # custom-shader = ghostty/shaders/cursor_tail.glsl
-  custom-shader = ghostty/shaders/cursor_warp.glsl
+  # custom-shader = shaders/ghostty/cursor_sweep.glsl
+  # custom-shader = shaders/ghostty/cursor_tail.glsl
+  custom-shader = shaders/ghostty/cursor_warp.glsl
 
   # --- Cursor Pulse/Boom Effects ---
-  # custom-shader = ghostty/shaders/rectangle_boom_cursor.glsl
-  custom-shader = ghostty/shaders/ripple_cursor.glsl
-  # custom-shader = ghostty/shaders/ripple_rectangle_cursor.glsl
-  # custom-shader = ghostty/shaders/sonic_boom_cursor.glsl
+  # custom-shader = shaders/ghostty/rectangle_boom_cursor.glsl
+  custom-shader = shaders/ghostty/ripple_cursor.glsl
+  # custom-shader = shaders/ghostty/ripple_rectangle_cursor.glsl
+  # custom-shader = shaders/ghostty/sonic_boom_cursor.glsl
 
   # --- Window and Appearance ---
   background-opacity = 0.9
