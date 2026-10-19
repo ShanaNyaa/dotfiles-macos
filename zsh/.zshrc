@@ -106,12 +106,26 @@ subcheck() {
   '
 }
 
-# Move submodules to remote tips; for tag pins (catppuccin), checkout the tag manually
+# Move submodules to remote tips; tmux plugins pinned as @plugin 'owner/repo#ref' in tmux.conf follow that ref
 subup() {
-  git -C ~/dotfiles submodule update --remote
+  local root=~/dotfiles conf=~/dotfiles/tmux/.config/tmux/tmux.conf spec p url
+  local -a paths pinned
+  paths=(${(f)"$(git -C $root config --file $root/.gitmodules --get-regexp '\.path$' | awk '{print $2}')"})
+  for spec in ${(f)"$(sed -nE "s/^set -g @plugin '([^'#]+)#([^']+)'.*/\1 \2/p" $conf)"}; do
+    [[ -n $spec ]] || continue
+    for p in $paths; do
+      url=$(git -C $root config --file $root/.gitmodules submodule.$p.url)
+      [[ ${url%.git} == */${spec% *} ]] || continue
+      echo "Pinning $p to ${spec#* } (from tmux.conf)"
+      git -C $root/$p fetch --quiet --tags origin &&
+        git -C $root/$p -c advice.detachedHead=false checkout --quiet ${spec#* }
+      pinned+=($p)
+    done
+  done
+  git -C $root submodule update --remote -- ${paths:|pinned}
   echo
   echo "Bumped (commit these paths when happy):"
-  git -C ~/dotfiles diff --submodule=log -- $(git -C ~/dotfiles config --file .gitmodules --get-regexp '\.path$' | awk '{print $2}')
+  git -C $root diff --submodule=log -- $paths
 }
 
 # --- zsh-syntax-highlighting: MUST be the very last line ---
