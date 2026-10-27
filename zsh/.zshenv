@@ -19,6 +19,9 @@ export NVM_DIR="$XDG_DATA_HOME/nvm"
 # --- LM Studio ---
 export PATH="$PATH:/Users/shana/.lmstudio/bin"
 
+# --- Postman ---
+export PATH='/Users/shana/.local/bin':"$PATH"
+
 # --- GPG ---
 export GPG_TTY=$(tty)
 
